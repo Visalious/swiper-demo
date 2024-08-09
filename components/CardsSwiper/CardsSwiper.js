@@ -106,13 +106,29 @@ const TinderCards = () => {
       e.preventDefault();
     };
 
-    const divElement = document.getElementById('tinder-card');
-    divElement.addEventListener('touchmove', handleTouchMove, { passive: false });
+    const attachTouchMoveListener = () => {
+      const allCards = document.querySelectorAll('.tinder--card');
+      allCards.forEach((card) => {
+        card.addEventListener('touchmove', handleTouchMove, { passive: false });
+      });
+    };
+
+    const detachTouchMoveListener = () => {
+      const allCards = document.querySelectorAll('.tinder--card');
+      allCards.forEach((card) => {
+        card.removeEventListener('touchmove', handleTouchMove);
+      });
+    };
+
+    // Attach the listener to all cards initially
+    attachTouchMoveListener();
 
     return () => {
-      divElement.removeEventListener('touchmove', handleTouchMove);
+      // Clean up the listener on component unmount
+      detachTouchMoveListener();
     };
   }, []);
+
 
   return (
     <div className="tinder" ref={tinderContainerRef}>
@@ -133,5 +149,4 @@ const TinderCards = () => {
 };
 
 export default TinderCards;
-
 
